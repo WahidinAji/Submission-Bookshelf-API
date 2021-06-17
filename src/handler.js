@@ -56,25 +56,16 @@ const addBookHandler = (request, h) => {
 
 const getAllBooksHandler = (request, h) => {
   const { name, reading, finished } = request.query;
+  let filterBooks = books;
   if (name !== undefined) {
-    return h.response({
-      status: 'success',
-      data: {
-        books: books
-          .filter((listBooks) => listBooks.name)
-          .map((listBooks) => ({
-            id: listBooks.id,
-            name: listBooks.name,
-            publisher: listBooks.publisher,
-          })),
-      },
-    }).code(200);
+    // eslint-disable-next-line max-len
+    filterBooks = filterBooks.filter((listBook) => listBook.name.toLowerCase().includes(name.toLowerCase()));
   }
   if (reading !== undefined) {
     return h.response({
       status: 'success',
       data: {
-        books: books
+        books: filterBooks
           .filter((listBooks) => listBooks.reading === !!Number(reading))
           .map((listBooks) => ({
             id: listBooks.id,
@@ -88,7 +79,7 @@ const getAllBooksHandler = (request, h) => {
     return h.response({
       status: 'success',
       data: {
-        books: books
+        books: filterBooks
           .filter((listBooks) => listBooks.finished === !!Number(finished))
           .map((listBooks) => ({
             id: listBooks.id,
@@ -102,7 +93,7 @@ const getAllBooksHandler = (request, h) => {
     .response({
       status: 'success',
       data: {
-        books: books.map((listBooks) => ({
+        books: filterBooks.map((listBooks) => ({
           id: listBooks.id,
           name: listBooks.name,
           publisher: listBooks.publisher,

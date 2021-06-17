@@ -40,3 +40,64 @@
    * deleteDataById
  # postman
    * all checklist
+
+   ```js
+   const getAllBooksHandler = (request, h) => {
+  const { name, reading, finished } = request.query;
+  if (name !== undefined) {
+    return h.response({
+      status: 'success',
+      data: {
+        books: books
+          .filter((listBooks) => listBooks.name)
+          .map((listBooks) => ({
+            id: listBooks.id,
+            name: listBooks.name,
+            publisher: listBooks.publisher,
+          })),
+      },
+    }).code(200);
+    // books.filter((listBook) => listBook.name.toLowerCase(name.toLowerCase()));
+  }
+  if (reading !== undefined) {
+    return h.response({
+      status: 'success',
+      data: {
+        books: books
+          .filter((listBooks) => listBooks.reading === !!Number(reading))
+          .map((listBooks) => ({
+            id: listBooks.id,
+            name: listBooks.name,
+            publisher: listBooks.publisher,
+          })),
+      },
+    }).code(200);
+  }
+  if (finished !== undefined) {
+    return h.response({
+      status: 'success',
+      data: {
+        books: books
+          .filter((listBooks) => listBooks.finished === !!Number(finished))
+          .map((listBooks) => ({
+            id: listBooks.id,
+            name: listBooks.name,
+            publisher: listBooks.publisher,
+          })),
+      },
+    }).code(200);
+  }
+  const response = h
+    .response({
+      status: 'success',
+      data: {
+        books: books.map((listBooks) => ({
+          id: listBooks.id,
+          name: listBooks.name,
+          publisher: listBooks.publisher,
+        })),
+      },
+    }).code(200);
+  return response;
+};
+   ```
